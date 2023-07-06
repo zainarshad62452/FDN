@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fdn/Controllers/needyController.dart';
+import 'package:fdn/Services/needyServices.dart';
 import 'package:fdn/pages/common/splash_screen.dart';
 import 'package:fdn/pages/widgets/header_widget.dart';
 import 'package:fdn/pages/widgets/loading.dart';
@@ -7,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
 import '../../Controllers/donorController.dart';
@@ -328,6 +330,27 @@ class _ProfilePageState extends State<NeedyProfilePage> {
                                               leading: Icon(Icons.my_location),
                                               title: Text("Location"),
                                               subtitle: Text("${needyCntr.user!.value.address}"),
+                                              trailing: IconButton(onPressed: (){
+                                                showDialog(context: context, builder: (ctx){
+                                                  return AlertDialog(
+                                                    title: Text("Change Location"),
+                                                    content: Column(
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      children: [
+                                                        MaterialButton(onPressed: () async {
+                                                          Geolocator.requestPermission();
+                                                          Position pos = await Geolocator.getCurrentPosition();
+                                                          NeedyServices().updateLocation(pos.latitude, pos.longitude);
+                                                          Get.back();
+
+                                                        },
+                                                        child: Text("Get Location"),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  );
+                                                });
+                                              }, icon: Icon(Icons.edit)),
                                             ),
                                             ListTile(
                                               leading: Icon(Icons.email),

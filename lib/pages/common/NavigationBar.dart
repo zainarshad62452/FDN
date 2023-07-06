@@ -55,7 +55,7 @@ class CustomNavBar extends StatelessWidget {
               child: IconButton(onPressed: (){
                 value.value = 3;
                 _controller.animateToPage(value.value, duration: Duration(milliseconds: 300), curve: Curves.ease);
-              }, icon: Icon(value.value==3?Icons.people:Icons.people_outlined,color:value.value==3?HexColor('#28282B'):Colors.white)),
+              }, icon: Icon(value.value==3?Icons.handshake:Icons.handshake_outlined,color:value.value==3?HexColor('#28282B'):Colors.white)),
             ),
           ),
         ],
