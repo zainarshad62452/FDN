@@ -3,6 +3,7 @@ import 'package:fdn/pages/widgets/snackbar.dart';
 import 'package:fdn/pages/widgets/warning.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -13,6 +14,7 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import '../../Controllers/foodController.dart';
 import '../../Controllers/loading.dart';
 import '../../Services/foodServices.dart';
+import '../../Services/needyServices.dart';
 import '../widgets/bottomSheet.dart';
 import '../widgets/bottomSheet2.dart';
 
@@ -237,6 +239,43 @@ class _ItemUpdateScreenState extends State<FoodUpdateScreen> {
                       ),
                     ),
                   ),
+                  SizedBox(height: 20.0,),
+                  Container(
+                    decoration: BoxDecoration(
+                        color: HexColor('#ffffff'),
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: HexColor('#28282B'),width: 2.0)
+                    ),
+                    child: ListTile(
+                      contentPadding: EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 4),
+                      leading: Icon(Icons.my_location),
+                      title: Text("Location"),
+                      subtitle: Text("Update Food Location"),
+                      trailing: IconButton(onPressed: (){
+                        showDialog(context: context, builder: (ctx){
+                          return AlertDialog(
+                            title: Text("Change Location"),
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                MaterialButton(onPressed: () async {
+                                  Geolocator.requestPermission();
+                                  Position pos = await Geolocator.getCurrentPosition();
+                                  FoodServices().updateLocation(foodCntr.allItems![widget.index].itemId.toString(),pos.latitude, pos.longitude);
+                                  Get.back();
+
+                                },
+                                  child: Text("Get Location"),
+                                ),
+                              ],
+                            ),
+                          );
+                        });
+                      }, icon: Icon(Icons.edit)),
+                    ),
+                  ),
+
                   SizedBox(height: 20.0,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,

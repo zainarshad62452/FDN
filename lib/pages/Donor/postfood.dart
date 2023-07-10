@@ -148,9 +148,10 @@ class _PostfoodState extends State<Postfood> {
                             decoration: ThemeHelper().textInputDecoration(
                                 "Mobile Number", "Enter your mobile number"),
                             keyboardType: TextInputType.phone,
+                            initialValue: "+92",
                             validator: (val) {
                               if (!(val!.isEmpty) &&
-                                  !RegExp(r"^(\d+)*$").hasMatch(val)) {
+                                  !RegExp(r"^\+92\d{10}$").hasMatch(val)) {
                                 return "Enter a valid phone number";
                               }
                               return null;
@@ -311,9 +312,19 @@ class _PostfoodState extends State<Postfood> {
     }else if(imageText.value == 'Not Selected'){
       alertSnackbar('Please Selected the Image');
       return false;
+    }else if(!RegExp(r"^[a-zA-Z\s]+$").hasMatch(namecontroller.text)){
+      alertSnackbar('Invalid Food Name. Only letters and spaces are allowed.');
+      return false;
+    }else if(!RegExp(r"^\d+$").hasMatch(quantitycontroller.text)){
+      alertSnackbar('Invalid Quantity. Only numbers are allowed.');
+      return false;
+    }else if(!RegExp(r"^\+92\d{10}$").hasMatch(phonecontroller.text)){
+      alertSnackbar('Invalid Phone Number. Please enter a valid phone number starting with +92.');
+      return false;
     }else{
       return true;
     }
   }
+
 }
 

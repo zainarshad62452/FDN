@@ -126,5 +126,18 @@ class FoodServices {
       loading(false);
     }
   }
+  updateLocation(String id,double latitude,double longitude) async {
+    try {
+      loading(true);
+      await firestore
+          .collection("posts")
+          .doc(id)
+          .update({"latitude": latitude,"longitude": longitude})
+          .then((value) =>snackbar("Done","Food Location has been updated")).onError((error, stackTrace)=>alertSnackbar("Error $error"));
+      loading(false);
+    } catch (e) {
+      loading(false);
+    }
+  }
 }
 
