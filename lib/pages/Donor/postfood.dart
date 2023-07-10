@@ -32,7 +32,7 @@ class _PostfoodState extends State<Postfood> {
   final namecontroller = TextEditingController();
   final quantitycontroller = TextEditingController();
   final locationcontroller = TextEditingController();
-  final phonecontroller = TextEditingController();
+  final phonecontroller = TextEditingController(text: "+92");
   final datecontroller = TextEditingController();
   final urlimg = TextEditingController();
   Rx<String> selectedDate = ''.obs;
@@ -71,6 +71,10 @@ class _PostfoodState extends State<Postfood> {
     }
 
     }
+  }
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -144,19 +148,30 @@ class _PostfoodState extends State<Postfood> {
                         SizedBox(height: 20.0),
                         Container(
                           child: TextFormField(
-                            controller: phonecontroller,
-                            decoration: ThemeHelper().textInputDecoration(
-                                "Mobile Number", "Enter your mobile number"),
-                            keyboardType: TextInputType.phone,
-                            initialValue: "+92",
-                            validator: (val) {
-                              if (!(val!.isEmpty) &&
-                                  !RegExp(r"^\+92\d{10}$").hasMatch(val)) {
-                                return "Enter a valid phone number";
-                              }
-                              return null;
-                            },
+                          controller: phonecontroller,
+                          decoration: ThemeHelper().textInputDecoration(
+                              "Mobile Number",
+                              "Enter your mobile number"
                           ),
+                          keyboardType: TextInputType.phone,
+                          validator: (val) {
+                            if (val!.isEmpty) {
+                              return "Please enter a phone number";
+                            } else if (!RegExp(r"^\+92\d{10}$").hasMatch(val)) {
+                              return "Enter a valid phone number";
+                            }
+                            return null;
+                          },
+                          // initialValue: "+92", // Set the initial value in the controller instead
+                          onTap: () {
+                            if (phonecontroller.text.isEmpty) {
+                              phonecontroller.text = "+92"; // Set the initial value when the field is tapped
+                              phonecontroller.selection = TextSelection.fromPosition(
+                                  TextPosition(offset: phonecontroller.text.length)
+                              ); // Place the cursor at the end of the initial value
+                            }
+                          },
+                        ),
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
                         SizedBox(height: 20.0),
