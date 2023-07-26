@@ -43,18 +43,18 @@ class RequestedFoodServices {
     );
     try {
       final user = firestore.collection("food-requests").doc();
-      DocumentSnapshot snap = await firestore.collection('donor').doc(requestedTo).get();
-      String token = snap['token'];
+      // DocumentSnapshot snap = await firestore.collection('donor').doc(requestedTo).get();
+      // String token = snap['token'];
       x.uid = user.id;
       user.set(x.toJson()).then((value) {
-        NotificationServices().sendPushMessage(token, 'You have a food request from ${needyCntr.user!.value.email}', 'Food Request');
+        // NotificationServices().sendPushMessage(token, 'You have a food request from ${needyCntr.user!.value.email}', 'Food Request');
         snackbar('Done','Request has been successfully sent to Donor');
       }).onError((error, stackTrace) => alertSnackbar('Error $error'));
       loading(false);
       Get.back();
     } catch (e) {
       loading(false);
-      alertSnackbar("Can't add Item");
+      alertSnackbar("$e Can't add Item");
     }
   }
   Stream<List<RequestFoodModel>>? streamAllItems() {
@@ -104,25 +104,6 @@ class RequestedFoodServices {
     }
   }
   acceptedByVolunteer(String item,String? uid,bool isFood)async {
-    if(isFood==true){
-      try {
-        loading(true);
-        print(Value);
-        await firestore
-            .collection("posts")
-            .doc(item)
-            .update({"isAccepted": true,"reservedStatus": "${foodStatus.willDeliverByVolunteer}",}).then((value) async {
-          print(uid);
-          DocumentSnapshot snap = await firestore.collection('needy').doc(uid).get();
-          String token = snap['token'];
-          NotificationServices().sendPushMessage(token, 'The Volunteer have accepted your Food Request, You can give your Food Location', 'Request Accepted');
-          snackbar("Done", "Successfully Accepted the request");
-        }).onError((error, stackTrace) => alertSnackbar("Error this is error 1 $error"));
-        loading(false);
-      } catch (e) {
-        loading(false);
-      }
-    }else{
       try {
         loading(true);
         print(Value);
@@ -146,7 +127,6 @@ class RequestedFoodServices {
       } catch (e) {
         loading(false);
       }
-    }
 
   }
   update(RequestFoodModel item,String index,String Value,String title) async {

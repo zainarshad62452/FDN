@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:fdn/pages/Donor/postfood.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -76,7 +77,7 @@ class PostedFoodPage extends StatelessWidget {
                 padding: EdgeInsets.all(5),
                 itemCount: foodCntr.allItems?.value.length,
                 itemBuilder: (context, index) {
-                  if(donorCntr.user!.value.uid==foodCntr.allItems![index].postBy){
+                  if(FirebaseAuth.instance.currentUser?.uid==foodCntr.allItems![index].postBy){
                     var remainingTime = foodCntr.allItems![index].date!.difference(DateTime.now());
                     Timer.periodic(Duration(minutes: 10), (timer) {
                       remainingTime = foodCntr.allItems![index].date!.difference(DateTime.now());
@@ -238,47 +239,6 @@ class PostedFoodPage extends StatelessWidget {
                                                         ),
                                                         Text('${foodCntr.allItems!.value[index].resurved==true?'Reserved':'Not Reserved'}')
                                                       ],
-                                                    ),
-                                                  ),
-                                                ),
-                                                GestureDetector(
-                                                  onTap:(){
-                                                    Get.to(()=> LocationScreen(latitude: foodCntr.allItems!.value[index].latitude!.toDouble(),longitude: foodCntr.allItems!.value[index].longitude!.toDouble(),));
-                                                  },
-                                                  child: Container(
-                                                    padding:
-                                                    EdgeInsets.only(top: 5),
-                                                    width: 200,
-                                                    height: 40,
-                                                    child: Center(
-                                                      child: Container(
-                                                        height: 40,
-                                                        width: 120,
-                                                        decoration: BoxDecoration(
-                                                          boxShadow: [
-                                                            BoxShadow(
-                                                                color: Colors
-                                                                    .black26,
-                                                                offset:
-                                                                Offset(0, 10),
-                                                                blurRadius: 10.0),
-                                                          ],
-                                                          color: HexColor('#28282B'),
-                                                          borderRadius:
-                                                          BorderRadius
-                                                              .circular(20),
-                                                        ),
-                                                        child: Center(
-                                                          child: Text(
-                                                            'View Location',
-                                                            style: TextStyle(
-                                                              fontWeight:
-                                                              FontWeight.bold,
-                                                              color: Colors.white,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
                                                     ),
                                                   ),
                                                 ),

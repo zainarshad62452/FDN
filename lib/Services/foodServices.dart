@@ -28,7 +28,7 @@ class FoodServices {
       longitude: longitude,
       latitude: latitude,
       phone: phone,
-      postBy: donorCntr.user!.value.uid,
+      postBy: FirebaseAuth.instance.currentUser?.uid,
         resurved: false,
     );
     try {

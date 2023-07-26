@@ -43,7 +43,7 @@ class NeedyRequestsPage extends StatelessWidget {
                           leading: Text('${requestedFoodCntr.allItems!.value[index].quantity}'),
                           trailing: Text('${requestedFoodCntr.allItems!.value[index].requestedBy}'),
                           onTap: (){
-                            Get.to(()=>RequestedFoodScreen(food: requestedFoodCntr.allItems!.value[index],isDonor: false,));
+                            Get.to(()=>RequestedFoodScreen(food: requestedFoodCntr.allItems!.value[index],isDonor: false, isVolunteer: false,));
                           },
                         ),
                       ),

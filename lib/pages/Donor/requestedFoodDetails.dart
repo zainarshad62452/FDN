@@ -12,10 +12,12 @@ import '../../Services/RequestedFoodServices.dart';
 class RequestedFoodScreen extends StatelessWidget {
   RequestedFoodScreen({Key? key,
     required this.food,
-    required this.isDonor
+    required this.isDonor,
+    required this.isVolunteer,
   }) : super(key: key);
   RequestFoodModel food;
   bool isDonor;
+  bool isVolunteer;
 
   @override
   Widget build(BuildContext context) {
@@ -83,14 +85,14 @@ class RequestedFoodScreen extends StatelessWidget {
                   customContainer(context,'${food.resurved==true?'Reserved':'Request Pending'}','Food Status'),
                   SizedBox(height: 20.0,),
                     Visibility(
-                      visible:isDonor==true,
+                      visible:(isDonor==true || isVolunteer == true),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           MaterialButton(
                             color: HexColor('#28282B'),
                             onPressed: (){
-                              isDonor?RequestedFoodServices().accept('${food.uid}', '${foodCntr.allItems![food.index!.toInt()].itemId}','${int.parse(foodCntr.allItems![food.index!.toInt()].quantity!) - int.parse(food.quantity.toString())}','${food.requestedUid}'):RequestedFoodServices().acceptedByVolunteer('${food.uid}', '${food.requestedUid}',true);
+                              isDonor?RequestedFoodServices().accept('${food.uid}', '${foodCntr.allItems![food.index!.toInt()].itemId}','${int.parse(foodCntr.allItems![food.index!.toInt()].quantity!) - int.parse(food.quantity.toString())}','${food.requestedUid}'):isVolunteer?RequestedFoodServices().acceptedByVolunteer('${food.uid}', '${food.requestedUid}',true):print("");
                             },child: Text('Approve',style: TextStyle(color: Colors.white),),),
                           MaterialButton(
                             color: HexColor('#28282B'),

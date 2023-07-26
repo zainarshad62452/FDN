@@ -34,31 +34,15 @@ class ReservedFoodPage extends StatelessWidget {
               ),
               Expanded(
                 child: Column(
-                  children: List.generate(int.parse('${foodCntr.allItems?.value.length}'), (index)  {
-                          if (needyCntr.user!.value.email ==
-                                  foodCntr.allItems![index].resurvedBy &&
-                              foodCntr.allItems![index].resurved == true) {
-                            return BuildItems(food: foodCntr.allItems![index]);
-                          } else {
-                            return SizedBox();
-                          }
-                        }),
-
-                  ),
-              ),
-              Expanded(
-                child: Column(
                   children: List.generate(
-                      int.parse('${requestedFoodCntr.allItems?.value.length}'), (index1) {
-                    int index = int.parse(
-                        '${requestedFoodCntr.allItems![index1].index}');
-                    print(needyCntr.user?.value.email);
+                      requestedFoodCntr.allItems!.value.length!, (index1) {
                     if (needyCntr.user?.value.email ==
                     requestedFoodCntr.allItems![index1].requestedBy
                         // &&  requestedFoodCntr.allItems![index1].reservedStatus=='${foodStatus.readyToCollect}'
                     ) {
-                      var food = foodCntr.allItems!.value[index];
-                print(index);
+                      print("This is value ${requestedFoodCntr.allItems![index1].index!}");
+                      var food = foodCntr.allItems!.value[requestedFoodCntr.allItems![index1].index!];
+                print(food);
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(

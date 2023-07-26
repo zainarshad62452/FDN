@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
@@ -16,6 +17,7 @@ import '../../Services/ChatServices.dart';
 import '../../Services/RequestedFoodServices.dart';
 import '../../Services/foodServices.dart';
 import '../common/locationScreen.dart';
+import '../common/volunteerLocationScreen.dart';
 import '../widgets/header_widget.dart';
 import 'package:fdn/Services/storage_service.dart';
 class InProcessFoodPage extends StatelessWidget {
@@ -35,30 +37,15 @@ class InProcessFoodPage extends StatelessWidget {
             ),
             Expanded(
               child: Column(
-                children: List.generate(int.parse('${foodCntr.allItems?.value.length}'), (index)  {
-                  if (volunteerCntr.user!.value.email ==
-                      foodCntr.allItems![index].requestedVolunteer &&
-                      foodCntr.allItems![index].resurved == true) {
-                    return BuildItems(food: foodCntr.allItems![index]);
-                  } else {
-                    return SizedBox();
-                  }
-                }),
-
-              ),
-            ),
-            Expanded(
-              child: Column(
                 children: List.generate(
-                    int.parse('${requestedFoodCntr.allItems?.value.length}'), (index1) {
-                  int index = int.parse(
-                      '${requestedFoodCntr.allItems![index1].index}');
+                    requestedFoodCntr.allItems!.value.length!, (index1) {
+                  int index = requestedFoodCntr.allItems![index1].index!;
                   print(needyCntr.user?.value.email);
                   if (volunteerCntr.user!.value.email ==
-                      requestedFoodCntr.allItems![index1].requestedBy
+                      requestedFoodCntr.allItems![index1].requestedVolunteer
                   // &&  requestedFoodCntr.allItems![index1].reservedStatus=='${foodStatus.readyToCollect}'
                   ) {
-                    var food = foodCntr.allItems!.value[int.parse('${requestedFoodCntr.allItems?.value.length}')];
+                    var food = foodCntr.allItems!.value[requestedFoodCntr.allItems![index1].index!];
                     print(index);
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -201,14 +188,14 @@ class InProcessFoodPage extends StatelessWidget {
                                                               255, 57, 4, 62),
                                                         ),
                                                       ),
-                                                      Text('${requestedFoodCntr.allItems!.value[index1].reservedStatus=='${foodStatus.willDeliverByVolunteer}'?'Deliver by volunteer':'Pending Request'}'),
+                                                      Text(requestedFoodCntr.allItems!.value[index1].reservedStatus=="${foodStatus.willDeliverByVolunteer}"?'Deliver by volunteer':requestedFoodCntr.allItems!.value[index1].reservedStatus=='${foodStatus.collected}'?'Delivered':'Pending Request'),
                                                     ],
                                                   ),
                                                 ),
                                                 GestureDetector(
                                                   onTap:(){
                                                     print('geo');
-                                                    Get.to(()=> LocationScreen(latitude: food.latitude!.toDouble(),longitude: food.longitude!.toDouble(),));
+                                                    Get.to(()=> VolunteerLocationScreen(foodLat: LatLng(food.latitude!.toDouble(),food.longitude!.toDouble(),), needyLat: LatLng(requestedFoodCntr.allItems!.value[index1].reservedLatitude!.toDouble(), requestedFoodCntr.allItems!.value[index1].reservedLongitude!.toDouble()),));
                                                   },
                                                   child: Container(
                                                     padding:
@@ -236,53 +223,6 @@ class InProcessFoodPage extends StatelessWidget {
                                                         child: Center(
                                                           child: Text(
                                                             'View Location',
-                                                            style: TextStyle(
-                                                              fontWeight:
-                                                              FontWeight.bold,
-                                                              color: Colors.white,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                GestureDetector(
-                                                  onTap:(){
-                                                    print('geo');
-                                                    if(requestedFoodCntr.allItems!.value[index1].reservedLatitude!=null){
-                                                      Get.to(()=> LocationScreen(latitude: requestedFoodCntr.allItems!.value[index1].reservedLatitude!.toDouble(),longitude: requestedFoodCntr.allItems!.value[index1].reservedLongitude!.toDouble(),));
-
-                                                    }else{
-                                                      alertSnackbar("Needy has not given the Location");
-                                                    }
-                                                  },
-                                                  child: Container(
-                                                    padding:
-                                                    EdgeInsets.only(top: 5),
-                                                    width: 200,
-                                                    height: 40,
-                                                    child: Center(
-                                                      child: Container(
-                                                        height: 40,
-                                                        width: 120,
-                                                        decoration: BoxDecoration(
-                                                          boxShadow: [
-                                                            BoxShadow(
-                                                                color: Colors
-                                                                    .black26,
-                                                                offset:
-                                                                Offset(0, 10),
-                                                                blurRadius: 10.0),
-                                                          ],
-                                                          color: HexColor('#28282B'),
-                                                          borderRadius:
-                                                          BorderRadius
-                                                              .circular(20),
-                                                        ),
-                                                        child: Center(
-                                                          child: Text(
-                                                            'View Needy Location',
                                                             style: TextStyle(
                                                               fontWeight:
                                                               FontWeight.bold,
@@ -342,6 +282,12 @@ class InProcessFoodPage extends StatelessWidget {
 
                                               ],
                                             ),
+                                            Positioned(
+                                                right: 0.0,
+                                                top: 0.0,
+                                                child: IconButton(onPressed: () async {
+                                                  ChatServices().startAChat("${requestedFoodCntr.allItems!.value[index].resurvedBy}","needy");
+                                                }, icon: Icon(Icons.chat))),
                                           ],
                                         ),
                                       ),
@@ -350,12 +296,6 @@ class InProcessFoodPage extends StatelessWidget {
                                   SizedBox(),
                                 ],
                               )),
-                          Positioned(
-                              right: 0.0,
-                              top: 0.0,
-                              child: IconButton(onPressed: () async {
-                                ChatServices().startAChat("${requestedFoodCntr.allItems!.value[index].resurvedBy}","needy");
-                              }, icon: Icon(Icons.chat))),
                         ],
                       ),
                     );
@@ -373,6 +313,5 @@ class InProcessFoodPage extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }

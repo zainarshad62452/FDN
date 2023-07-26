@@ -239,150 +239,47 @@ class AllFoodPageForNeedy extends StatelessWidget {
                                                   ),
                                                 ),
                                                 GestureDetector(
-                                                  onTap:(){
-                                                    showDialog(context: context, builder: (ctx){
-                                                      return Dialog(
-                                                        backgroundColor: Colors.transparent,
-                                                        child: Container(
-                                                          width: double.infinity,
-                                                          decoration: BoxDecoration(
-                                                              color: Colors.white,
-                                                              borderRadius: BorderRadius.circular(16),
-                                                              border: Border.all(color: Colors.black)),
-                                                          child: Column(
+                                                    onTap:(){
+                                                      showDialog(context: context, builder: (ctx){
+                                                        TextEditingController controller = TextEditingController();
+                                                        return AlertDialog(
+                                                          content: Column(
                                                             mainAxisSize: MainAxisSize.min,
                                                             children: [
-                                                              GestureDetector(
-                                                                onTap:(){
-                                                                  showDialog(context: context, builder: (ctx){
-                                                                    TextEditingController controller = TextEditingController();
-                                                                    return AlertDialog(
-                                                                      content: Column(
-                                                                        mainAxisSize: MainAxisSize.min,
-                                                                        children: [
-                                                                          Text('Enter the amount to resurved the food'),
-                                                                          SizedBox(height: 10,),
-                                                                          Container(
-                                                                            child: TextFormField(
-                                                                              controller: controller,
-                                                                              decoration: ThemeHelper().textInputDecoration(
-                                                                                  'Quantity', 'Enter your Quantity'),
-                                                                            ),
-                                                                            decoration: ThemeHelper().inputBoxDecorationShaddow(),
-                                                                          ),
-                                                                          SizedBox(height: 10.0,),
-                                                                          MaterialButton(
-                                                                            color: Colors.black,
-                                                                            onPressed: (){
-                                                                              WarningDialog(
-                                                                                  context: context,
-                                                                                  title:
-                                                                                  "Do You Want To Resurved this Food of Quantity ${controller.text.trim()}",
-                                                                                  onYes: () async {
-                                                                                    if(isGreater(controller.text.trim(),foodCntr.allItems!.value[index].quantity)){
-                                                                                      print(index);
-                                                                                      RequestedFoodServices().registerItem(food: foodCntr.allItems!.value[index].itemId,by: FirebaseAuth.instance.currentUser?.email,quantity: controller.text.trim(),requestedTo: foodCntr.allItems!.value[index].postBy,index: index,lat: needyCntr.user?.value.latitude,lng: needyCntr.user?.value.longitude);
-                                                                                    }
-                                                                                  });
-                                                                            },child: Text('Submit',style: TextStyle(color: Colors.white),),)
-                                                                        ],
-                                                                      ),
-                                                                    );
-                                                                  });
-
-                                                                },
-                                                                child: Container(
-                                                                  padding:
-                                                                  EdgeInsets.only(top: 5),
-                                                                  width: 200,
-                                                                  height: 40,
-                                                                  child: Center(
-                                                                    child: Container(
-                                                                      height: 40,
-                                                                      width: 170,
-                                                                      decoration: BoxDecoration(
-                                                                        boxShadow: [
-                                                                          BoxShadow(
-                                                                              color: Colors
-                                                                                  .black26,
-                                                                              offset:
-                                                                              Offset(0, 10),
-                                                                              blurRadius: 10.0),
-                                                                        ],
-                                                                        color: HexColor('#28282B'),
-                                                                        borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(20),
-                                                                      ),
-                                                                      child: Center(
-                                                                        child: Text(
-                                                                          'Request for Food',
-                                                                          style: TextStyle(
-                                                                            fontWeight:
-                                                                            FontWeight.bold,
-                                                                            color: Colors.white,
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
+                                                              Text('Enter the amount to resurved the food'),
+                                                              SizedBox(height: 10,),
+                                                              Container(
+                                                                child: TextField(
+                                                                  controller: controller,
+                                                                  decoration: InputDecoration(
+                                                                    // label: Text("Quantity"),
+                                                                    labelText: "Enter the quantity",
+                                                                    helperText: "Current Quantity of food is ${foodCntr.allItems!.value[index].quantity}"
                                                                   ),
                                                                 ),
+                                                                decoration: ThemeHelper().inputBoxDecorationShaddow(),
                                                               ),
-                                                              GestureDetector(
-                                                                onTap:(){
+                                                              SizedBox(height: 10.0,),
+                                                              MaterialButton(
+                                                                color: Colors.black,
+                                                                onPressed: (){
                                                                   WarningDialog(
                                                                       context: context,
                                                                       title:
-                                                                      "Do You Want To Reserved this Food",
+                                                                      "Do You Want To Resurved this Food of Quantity ${controller.text.trim()}",
                                                                       onYes: () async {
-                                                                        FoodServices().resurve(foodCntr.allItems!.value[index],needyCntr.user!.value.email.toString(),needyCntr.user?.value);
+                                                                        if(isGreater(controller.text.trim(),foodCntr.allItems!.value[index].quantity)){
+                                                                          print(foodCntr.allItems!.value[index].postBy);
+                                                                          RequestedFoodServices().registerItem(food: foodCntr.allItems!.value[index].itemId,by: FirebaseAuth.instance.currentUser?.email,quantity: controller.text.trim(),requestedTo: foodCntr.allItems!.value[index].postBy,index: index,lat: needyCntr.user?.value.latitude,lng: needyCntr.user?.value.longitude);
+                                                                        }
                                                                       });
-
-                                                                },
-                                                                child: Container(
-                                                                  padding:
-                                                                  EdgeInsets.only(top: 5),
-                                                                  width: 200,
-                                                                  height: 40,
-                                                                  child: Center(
-                                                                    child: Container(
-                                                                      height: 40,
-                                                                      width: 170,
-                                                                      decoration: BoxDecoration(
-                                                                        boxShadow: [
-                                                                          BoxShadow(
-                                                                              color: Colors
-                                                                                  .black26,
-                                                                              offset:
-                                                                              Offset(0, 10),
-                                                                              blurRadius: 10.0),
-                                                                        ],
-                                                                        color: HexColor('#28282B'),
-                                                                        borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(20),
-                                                                      ),
-                                                                      child: Center(
-                                                                        child: Text(
-                                                                          'Resurved Food',
-                                                                          style: TextStyle(
-                                                                            fontWeight:
-                                                                            FontWeight.bold,
-                                                                            color: Colors.white,
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              )
+                                                                },child: Text('Submit',style: TextStyle(color: Colors.white),),)
                                                             ],
                                                           ),
-                                                        ),
-                                                      );
-                                                    });
+                                                        );
+                                                      });
 
-                                                  },
+                                                    },
                                                   child: Container(
                                                     padding:
                                                     EdgeInsets.only(top: 5),

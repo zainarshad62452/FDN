@@ -61,7 +61,7 @@ class AllFoodRequestsScreen extends StatelessWidget {
                             trailing: Text('${requestedFoodCntr.allItems!.value[index].requestedBy}'),
                             subtitle: Text('${requestedFoodCntr.allItems!.value[index].resurved==true?'Reserved':'Pending'}'),
                             onTap: (){
-                              Get.to(()=>RequestedFoodScreen(food: requestedFoodCntr.allItems!.value[index],isDonor: false,));
+                              Get.to(()=>RequestedFoodScreen(food: requestedFoodCntr.allItems!.value[index],isDonor: false, isVolunteer: false,));
                             },
                           ),
                         ),
