@@ -250,7 +250,7 @@ class ReservedFoodPage extends StatelessWidget {
                                                               title: Text('${volunteerCntr.allUsers!.value[index].email}'),
                                                               onTap: (){
                                                                 RequestedFoodServices().update(requestedFoodCntr.allItems!.value[index1], 'reservedStatus', '${foodStatus.requestToVolunteer}','Successfully Sent Request to Volunteer');
-                                                                RequestedFoodServices().update(requestedFoodCntr.allItems!.value[index], 'requestedVolunteer', '${volunteerCntr.allUsers!.value[index].email}','Successfully Sent Request to Volunteer');
+                                                                RequestedFoodServices().update(requestedFoodCntr.allItems!.value[index], 'requestedVolunteer', '${volunteerCntr.allUsers!.value[index].email}','Successfully Sent Request to Volunteer (${volunteerCntr.allUsers!.value[index].email})');
                                                                 Get.back();
                                                               },
                                                             ),

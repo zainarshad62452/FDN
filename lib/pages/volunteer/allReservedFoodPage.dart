@@ -35,20 +35,20 @@ class AllReservedFoodPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Container(
-      child: Stack(
-        children: [
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 100.0),
-            width: MediaQuery.of(context).size.width,
-            child: Carouselslider(),
-          ),
-          Container(
-            height: 100,
-            child: HeaderWidget(100, false, Icons.house_rounded),
-          ),
-          Expanded(
-            child: Column(
+    return Obx(() => SingleChildScrollView(
+      child: Container(
+        child: Stack(
+          children: [
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 100.0),
+              width: MediaQuery.of(context).size.width,
+              child: Carouselslider(),
+            ),
+            Container(
+              height: 100,
+              child: HeaderWidget(100, false, Icons.house_rounded),
+            ),
+            Column(
               children: [
                 SizedBox(height: 300.0,),
                 Column(
@@ -269,8 +269,8 @@ class AllReservedFoodPage extends StatelessWidget {
                 ),
               ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     ),);;
   }

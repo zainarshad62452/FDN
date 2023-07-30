@@ -40,8 +40,8 @@ class InProcessFoodPage extends StatelessWidget {
                 children: List.generate(
                     requestedFoodCntr.allItems!.value.length!, (index1) {
                   int index = requestedFoodCntr.allItems![index1].index!;
-                  print(needyCntr.user?.value.email);
-                  if (volunteerCntr.user!.value.email ==
+                  print(FirebaseAuth.instance.currentUser?.email);
+                  if (FirebaseAuth.instance.currentUser?.email ==
                       requestedFoodCntr.allItems![index1].requestedVolunteer
                   // &&  requestedFoodCntr.allItems![index1].reservedStatus=='${foodStatus.readyToCollect}'
                   ) {

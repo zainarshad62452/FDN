@@ -30,7 +30,7 @@ class VolunteerRequestsPage extends StatelessWidget {
             Column(
                 children: List.generate(int.parse('${requestedFoodCntr.allItems!.length}'), (index) {
                   try{
-                    if(requestedFoodCntr.allItems!.value[index].requestedVolunteer == volunteerCntr.user!.value.email
+                    if(requestedFoodCntr.allItems!.value[index].requestedVolunteer == FirebaseAuth.instance.currentUser?.email
                         && requestedFoodCntr.allItems!.value[index].reservedStatus == "${foodStatus.requestToVolunteer}"
                         // && requestedFoodCntr.allItems!.value[index].resurved==false
                     ){

@@ -270,7 +270,7 @@ class AllFoodPageForNeedy extends StatelessWidget {
                                                                       onYes: () async {
                                                                         if(isGreater(controller.text.trim(),foodCntr.allItems!.value[index].quantity)){
                                                                           print(foodCntr.allItems!.value[index].postBy);
-                                                                          RequestedFoodServices().registerItem(food: foodCntr.allItems!.value[index].itemId,by: FirebaseAuth.instance.currentUser?.email,quantity: controller.text.trim(),requestedTo: foodCntr.allItems!.value[index].postBy,index: index,lat: needyCntr.user?.value.latitude,lng: needyCntr.user?.value.longitude);
+                                                                          RequestedFoodServices().registerItem(food: foodCntr.allItems!.value[index].itemId,by: FirebaseAuth.instance.currentUser?.email!=null?FirebaseAuth.instance.currentUser?.email:needyCntr.user!.value.email,quantity: controller.text.trim(),requestedTo: foodCntr.allItems!.value[index].postBy,index: index,lat: needyCntr.user?.value.latitude,lng: needyCntr.user?.value.longitude);
                                                                         }
                                                                       });
                                                                 },child: Text('Submit',style: TextStyle(color: Colors.white),),)
